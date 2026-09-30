@@ -1,0 +1,129 @@
+node_modules/
+dist/
+*.log
+.DS_Store
+
+# Credentials are committed here only because this is a coursework handover.
+# For anything real, delete these two lines and rotate every key.
+# .env
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment variables / secrets
+.env
+.env.*
+!.env.example
+server/.env
+client/.env
+# Build output
+dist/
+build/
+out/
+.next/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*.temp
+
+# Coverage
+coverage/
+
+# Cache
+.cache/
+.parcel-cache/
+.eslintcache
+
+# Vite
+.vite/
+
+# React
+*.local
+
+# Supabase local files
+.supabase/
+
+# Backup files
+*.bak
+*.backup
+
+# Certificates / private keys
+*.pem
+*.key
+*.crt
+
+# Environment variables / secrets
+**/.env
+**/.env.*
+!**/.env.example
+
+# Python — the classifier in model/
+#
+# The virtual environment was committed once, which put every TensorFlow wheel
+# in the repository and made the checkout useless on any other machine: the
+# scripts in .venv/Scripts hard-code the absolute path of the Python that built
+# them, so it pointed at a user directory that does not exist elsewhere. Build
+# it locally from requirements.txt instead.
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Photographs people upload to the classifier's demo page, and the shuffled
+# copy of the dataset that split_dataset.py writes.
+model/uploads/
+model/dataset_split/
+
+# Python virtual environment
+model/.venv/
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Environment variables
+.env
+.env.*
+
+# Node
+node_modules/
+
+# Build files
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+
+model/.venv/
+.venv/
+venv/
+env/
+node_modules/
+.env
+.env.*
+__pycache__/
+*.pyc

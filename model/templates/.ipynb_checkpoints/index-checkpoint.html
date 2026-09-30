@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Public Complaint AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>🏛️ Public Complaint AI</h1>
+
+        <p>Upload an image and let AI detect the civic issue</p>
+
+        <form method="POST" enctype="multipart/form-data">
+
+            <label>Select Complaint Image</label><br><br>
+
+            <input type="file" name="image" accept="image/*" required>
+
+            <br><br>
+
+            <button type="submit">🔍 Detect Issue</button>
+
+        </form>
+
+        {% if error %}
+        <div class="error">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        {% if result %}
+        <div class="result">
+
+            <h2>AI Detection Result</h2>
+
+            <p><strong>Issue:</strong> {{ result }}</p>
+
+            <p>
+                <strong>Confidence:</strong>
+                {{ "%.2f"|format(confidence) }}%
+            </p>
+
+            <p><strong>Status:</strong> {{ status }}</p>
+
+        </div>
+        {% endif %}
+
+    </div>
+
+</body>
+</html>
