@@ -91,36 +91,26 @@ export const requireAuth = wrap(async (req, _res, next) => {
     );
   }
 
-  let data;
-  let error;
+  const { data, error } = await supabase.auth.getUser(token);
 
-  try {
-    const result = await supabase.auth.getUser(token);
-    data = result.data;
-    error = result.error;
-  } catch (err) {
-    // Never log access tokens, service-role keys, or request headers.
-    console.error("[auth] Supabase request exception:", {
-      name: err?.name,
-      message: err?.message,
-      cause: err?.cause?.message,
-    });
+if (error || !data?.user) {
+  console.error("[auth] Supabase validation failure:", {
+    name: error?.name,
+    message: error?.message,
+    status: error?.status,
+    cause: error?.cause?.message,
+    causeCode: error?.cause?.code,
+    originalError: error?.originalError?.message,
+    originalErrorCode: error?.originalError?.cause?.code,
+  });
 
-    throw new HttpError(
-      503,
-      "Authentication service temporarily unavailable."
-    );
-  }
-
-  if (error || !data?.user) {
-    console.error("[auth] Supabase token validation failed:", {
-      name: error?.name,
-      message: error?.message,
-      status: error?.status,
-    });
-
-    throw new HttpError(401, "Your session has expired.");
-  }
+  throw new HttpError(
+    error?.status === 0 ? 503 : 401,
+    error?.status === 0
+      ? "Authentication service temporarily unavailable."
+      : "Your session is invalid or expired."
+  );
+}
 
   const { rows } = await query(
     `select p.id, p.role, p.full_name,
