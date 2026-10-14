@@ -21,7 +21,7 @@ import geo from "./routes/geo.js";
 import officer from "./routes/officer.js";
 import officers from "./routes/officers.js";
 import contracts from "./routes/contracts.js";
-import admin from "./routes/admin.js";
+import admin from "./routes/admin.js";g
 import assistant from "./routes/assistant.js";
 import audit from "./routes/audit.js";
 import notifications from "./routes/notifications.js";
@@ -145,17 +145,19 @@ app.use("/api/reports", standard, reports);
 app.use("/api/agent/run", rateLimit({ windowMs: 60_000, limit: 8 }));
 app.use("/api/agent", standard, agent);
 
-app.get("/api/diagnostics/supabase", async (_req, res) => {
-  const url = process.env.SUPABASE_URL;
 
+app.get("/api/diagnostics/supabase", async (_req, res) => {
   try {
+    const url = process.env.SUPABASE_URL;
+    const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
     const response = await fetch(`${url}/auth/v1/health`, {
-      signal: AbortSignal.timeout(8000),
+      headers: { apikey: key },
+      signal: AbortSignal.timeout(10000),
     });
 
     console.log("[supabase connectivity]", {
       status: response.status,
-      reachable: true,
     });
 
     res.status(200).json({
@@ -176,7 +178,6 @@ app.get("/api/diagnostics/supabase", async (_req, res) => {
     });
   }
 });
-
 // Express otherwise returns an HTML page for a missing API route. The client
 // only speaks JSON, so a stale button or a mistyped route should expose a safe,
 // actionable 404 rather than fail while parsing markup as JSON.
