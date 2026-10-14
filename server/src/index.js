@@ -43,7 +43,7 @@ import { checkSchema } from "./db/schema-check.js";
 checkEnvironment();
 
 const app = express();
-
+app.set("trust proxy", 1);
 
 app.use(helmet());
 
