@@ -69,6 +69,21 @@ export const rank = (role) => ROLE_RANK[role] ?? -1;
  * no such failure mode, and a genuinely missing profile is now an explicit
  * error rather than a quiet demotion.
  */
+
+const authHeader = req.get("authorization") || "";
+const match = authHeader.match(/^Bearer\s+(.+)$/i);
+const token = match?.[1]?.trim();
+
+console.log("[auth debug]", {
+  path: req.originalUrl,
+  hasAuthorization: Boolean(authHeader),
+  validBearerFormat: Boolean(match),
+  tokenLength: token?.length ?? 0,
+});
+
+if (!token) {
+  throw new HttpError(401, "Sign in to continue.");
+}
 export const requireAuth = wrap(async (req, _res, next) => {
   
 const authHeader = req.get("authorization") || "";
