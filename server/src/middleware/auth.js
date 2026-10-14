@@ -70,39 +70,33 @@ export const rank = (role) => ROLE_RANK[role] ?? -1;
  * error rather than a quiet demotion.
  */
 
-const authHeader = req.get("authorization") || "";
-const match = authHeader.match(/^Bearer\s+(.+)$/i);
-const token = match?.[1]?.trim();
 
-console.log("[auth debug]", {
-  path: req.originalUrl,
-  hasAuthorization: Boolean(authHeader),
-  validBearerFormat: Boolean(match),
-  tokenLength: token?.length ?? 0,
-});
 
-if (!token) {
-  throw new HttpError(401, "Sign in to continue.");
-}
 export const requireAuth = wrap(async (req, _res, next) => {
-  
-const authHeader = req.get("authorization") || "";
-const match = authHeader.match(/^Bearer\s+(.+)$/i);
-const token = match?.[1]?.trim();
+  const authHeader = req.get("authorization") || "";
+  const match = authHeader.match(/^Bearer\s+(.+)$/i);
+  const token = match?.[1]?.trim();
 
-console.log("[auth debug]", {
-  path: req.originalUrl,
-  hasAuthorization: Boolean(authHeader),
-  validBearerFormat: Boolean(match),
-});
+  console.log("[auth debug]", {
+    path: req.originalUrl,
+    hasAuthorization: Boolean(authHeader),
+    validBearerFormat: Boolean(match),
+  });
 
-if (!token) {
-  throw new HttpError(401, "Sign in to continue.");
-}
-
+  if (!token) {
+    throw new HttpError(401, "Sign in to continue.");
+  }
 
   const { data, error } = await supabase.auth.getUser(token);
-  if (error || !data?.user) throw new HttpError(401, "Your session has expired.");
+
+  if (error || !data?.user) {
+    console.error("[auth] Supabase token validation failed:", error?.message);
+    throw new HttpError(401, "Your session has expired.");
+  }
+
+  // Keep your existing profile query, req.user assignment,
+  // and next() here, unchanged.
+
 
   /**
    * Which department this person belongs to.
