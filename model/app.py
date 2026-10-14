@@ -1,5 +1,8 @@
 from flask import Flask, render_template, request, send_from_directory, jsonify
 import tensorflow as tf
+# Limit TensorFlow CPU thread usage on small hosting instances.
+tf.config.threading.set_intra_op_parallelism_threads(1)
+tf.config.threading.set_inter_op_parallelism_threads(1)
 import numpy as np
 from PIL import Image
 import io
