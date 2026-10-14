@@ -731,14 +731,10 @@ def index():
 # RUN APPLICATION
 # ============================================================
 
+
 if __name__ == "__main__":
-
-    # Port 8000, because that is where the Node server looks for the classifier
-    # (LOCAL_VISION_URL). debug=False because the reloader loads the model a
-    # second time and doubles the memory for nothing.
-
     app.run(
-        host="127.0.0.1",
+        host="0.0.0.0",
         port=int(os.environ.get("PORT", 8000)),
         debug=False
     )
