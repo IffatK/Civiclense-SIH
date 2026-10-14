@@ -4,6 +4,7 @@ import numpy as np
 from PIL import Image
 import io
 import os
+import time
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -386,16 +387,30 @@ IMG_SIZE = (224, 224)
 
 
 def predict(img):
-    """Softmax over the 23 classes for one PIL image."""
+    """Run one image through the loaded model and log inference timing."""
+    started = time.perf_counter()
 
-    # The model contains Rescaling(1./127.5, offset=-1). Normalising here as
-    # well would halve every pixel a second time.
+    # The model contains Rescaling(1./127.5, offset=-1), so do not normalise
+    # pixels again here.
     array = np.expand_dims(
-        np.array(img.convert("RGB").resize(IMG_SIZE), dtype=np.float32),
-        axis=0
+        np.asarray(img.convert("RGB").resize(IMG_SIZE), dtype=np.float32),
+        axis=0,
     )
 
-    return model.predict(array, verbose=0)[0]
+    print(f"[model] inference started; input_shape={array.shape}", flush=True)
+    inference_started = time.perf_counter()
+
+    # Direct invocation avoids Keras predict()'s data-adapter overhead for a
+    # single image. Keep training=False so inference layers behave correctly.
+    output = model(array, training=False)
+    predictions = np.asarray(output)[0]
+
+    print(
+        f"[model] inference completed in {time.perf_counter() - inference_started:.2f}s; "
+        f"total predict() time={time.perf_counter() - started:.2f}s",
+        flush=True,
+    )
+    return predictions
 
 
 def recommended_action(key):
