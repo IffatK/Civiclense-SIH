@@ -145,6 +145,38 @@ app.use("/api/reports", standard, reports);
 app.use("/api/agent/run", rateLimit({ windowMs: 60_000, limit: 8 }));
 app.use("/api/agent", standard, agent);
 
+app.get("/api/diagnostics/supabase", async (_req, res) => {
+  const url = process.env.SUPABASE_URL;
+
+  try {
+    const response = await fetch(`${url}/auth/v1/health`, {
+      signal: AbortSignal.timeout(8000),
+    });
+
+    console.log("[supabase connectivity]", {
+      status: response.status,
+      reachable: true,
+    });
+
+    res.status(200).json({
+      reachable: true,
+      supabaseStatus: response.status,
+    });
+  } catch (err) {
+    console.error("[supabase connectivity]", {
+      name: err.name,
+      message: err.message,
+      cause: err.cause?.message,
+      code: err.cause?.code,
+    });
+
+    res.status(503).json({
+      reachable: false,
+      error: "Could not connect to Supabase",
+    });
+  }
+});
+
 // Express otherwise returns an HTML page for a missing API route. The client
 // only speaks JSON, so a stale button or a mistyped route should expose a safe,
 // actionable 404 rather than fail while parsing markup as JSON.
