@@ -44,9 +44,30 @@ checkEnvironment();
 
 const app = express();
 
+
 app.use(helmet());
-app.use(cors({ origin: process.env.CLIENT_ORIGIN, credentials: true }));
+
+const allowedOrigins = new Set([
+  "http://localhost:5173",
+  "https://civiclense-sih.vercel.app",
+  "https://civiclense-sih-git-main-iffatks-projects.vercel.app",
+]);
+
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.has(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error(`Origin not allowed by CORS: ${origin}`));
+    },
+    credentials: true,
+  })
+);
+
 app.use(express.json({ limit: "1mb" }));
+
 
 // Model calls cost money and time; they are throttled far harder than reads.
 const standard = rateLimit({ windowMs: 60_000, limit: 120 });
