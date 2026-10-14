@@ -21,7 +21,7 @@ import geo from "./routes/geo.js";
 import officer from "./routes/officer.js";
 import officers from "./routes/officers.js";
 import contracts from "./routes/contracts.js";
-import admin from "./routes/admin.js";g
+import admin from "./routes/admin.js";
 import assistant from "./routes/assistant.js";
 import audit from "./routes/audit.js";
 import notifications from "./routes/notifications.js";
