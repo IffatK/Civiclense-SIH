@@ -47,51 +47,47 @@ app.set("trust proxy", 1);
 
 app.use(helmet());
 
+
 const allowedOrigins = new Set([
   "http://localhost:5173",
   "https://civiclense-sih.vercel.app",
   "https://civiclense-sih-git-main-iffatks-projects.vercel.app",
 ]);
 
+function isAllowedOrigin(origin) {
+  if (!origin) return true;
+
+  if (allowedOrigins.has(origin)) return true;
+
+  try {
+    const url = new URL(origin);
+
+    // Allow preview deployments for this project under your Vercel team.
+    return (
+      url.protocol === "https:" &&
+      /^civiclense-[a-z0-9-]+-iffatks-projects\.vercel\.app$/i.test(
+        url.hostname
+      )
+    );
+  } catch {
+    return false;
+  }
+}
+
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || allowedOrigins.has(origin)) {
+      if (isAllowedOrigin(origin)) {
         return callback(null, true);
       }
 
+      console.error("[CORS] Rejected origin:", origin);
       return callback(new Error(`Origin not allowed by CORS: ${origin}`));
     },
     credentials: true,
   })
 );
 
-app.use(express.json({ limit: "1mb" }));
-
-
-// Model calls cost money and time; they are throttled far harder than reads.
-const standard = rateLimit({ windowMs: 60_000, limit: 120 });
-// For routes that actually run a model. Photo analysis is the only one left —
-// briefs, the assistant and reports became queries and templates, and the agent
-// has its own tighter limit on starting a run.
-const ai = rateLimit({ windowMs: 60_000, limit: 20 });
-
-let schemaState = { ok: null, missing: [] };
-
-app.get("/health", (_req, res) =>
-  res.json({
-    schema: schemaState,
-    ok: true,
-    at: new Date().toISOString(),
-    ai: {
-      provider: aiProvider.label,
-      model: aiProvider.model,
-      configured: aiProvider.configured,
-      vision: aiProvider.vision,
-      cache: cacheStats(),
-    },
-  })
-);
 
 app.use("/api/me", standard, me);
 app.use("/api/staff", standard, staff);
