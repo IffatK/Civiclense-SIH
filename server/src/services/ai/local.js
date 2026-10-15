@@ -220,13 +220,21 @@ export const local = {
       throw err;
     }
 
-    if (!res.ok) {
-      const err = new Error(
-        (await res.json().catch(() => ({}))).error || `Classifier returned ${res.status}`
-      );
-      err.status = 502;
-      throw err;
-    }
+    
+if (!res.ok) {
+  console.error(`[classifier] HTTP ${res.status} from ${BASE}/classify`);
+
+  return JSON.stringify(toAnalysis({
+    category: "pothole",
+    category_confidence: 10,
+    ai_explanation:
+      "Automatic analysis is temporarily unavailable. Please review the image and select the correct category.",
+    needs_human_review: true,
+    top_categories: [],
+    is_civic: true
+  }));
+}
+
 
     return JSON.stringify(toAnalysis(await res.json()));
   },
