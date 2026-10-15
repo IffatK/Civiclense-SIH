@@ -221,19 +221,21 @@ export const local = {
     }
 
     
-if (!res.ok) {
-  console.error(`[classifier] HTTP ${res.status} from ${BASE}/classify`);
 
-  return JSON.stringify(toAnalysis({
-    category: "pothole",
-    category_confidence: 10,
-    ai_explanation:
-      "Automatic analysis is temporarily unavailable. Please review the image and select the correct category.",
-    needs_human_review: true,
-    top_categories: [],
-    is_civic: true
-  }));
+if (!res.ok) {
+  const body = await res.text().catch(() => "");
+  console.error(
+    `[classifier] HTTP ${res.status} from ${BASE}/classify:`,
+    body.slice(0, 500)
+  );
+
+  const err = new Error(
+    `Image classifier failed with HTTP ${res.status}. Please try again.`
+  );
+  err.status = 502;
+  throw err;
 }
+
 
 
     return JSON.stringify(toAnalysis(await res.json()));
