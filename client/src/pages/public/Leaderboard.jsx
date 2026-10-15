@@ -157,8 +157,7 @@ export default function Leaderboard() {
               </div>
             )}
 
-            {/* Not on the board at all — worth saying, with what would put them
-                there, rather than leaving them to wonder. */}
+          
             {profile?.role === "citizen" && tab === "residents" && mine === -1 && (
               <p className="label" style={{ marginTop: "var(--s-5)" }}>
                 You are not on the board yet. Points come from filing reports that get acted

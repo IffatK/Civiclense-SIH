@@ -3188,3 +3188,797 @@ textarea.input { line-height: var(--lh-body); padding: var(--s-3); resize: verti
     flex: 0 0 36px;
   }
 }
+
+/* ==========================================================
+   CIVICLENSE — CONSOLIDATED RESPONSIVE FIX
+   Keep this block at the VERY END of global.css.
+   ========================================================== */
+
+/* Prevent grid and flex children from forcing the page wider. */
+html,
+body,
+#root {
+  width: 100%;
+  min-width: 0;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+}
+
+.shell,
+.shell > *,
+.page,
+.page > *,
+.topbar,
+.container,
+.pubgrid,
+.hero__inner {
+  min-width: 0;
+}
+
+.shell {
+  width: 100%;
+  min-height: 100vh;
+  grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+}
+
+.shell > div:not(.drawer-backdrop) {
+  min-width: 0;
+  width: 100%;
+}
+
+.page {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.page img,
+.page video,
+.page canvas,
+.page iframe {
+  max-width: 100%;
+}
+
+/* Do not let long text, references or URLs expand a layout. */
+.page h1,
+.page h2,
+.page h3,
+.page p,
+.page a,
+.page label,
+.page td,
+.page th,
+.page code {
+  overflow-wrap: anywhere;
+}
+
+.page input,
+.page select,
+.page textarea {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.page textarea {
+  resize: vertical;
+}
+
+/* Public header: desktop defaults remain intact. */
+.pubhead,
+.pubhead__inner {
+  width: 100%;
+  min-width: 0;
+}
+
+.pubhead__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pubhead__mark {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.pubhead__actions {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.pubhead__burger {
+  flex: 0 0 40px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Public navigation drawer stays above page content. */
+.drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+}
+
+.drawer__sheet {
+  flex: 0 0 min(320px, 86vw);
+  width: min(320px, 86vw);
+  max-width: 86vw;
+  min-width: 0;
+  min-height: 100%;
+  padding-bottom: max(20px, env(safe-area-inset-bottom));
+}
+
+.drawer__scrim {
+  min-width: 0;
+}
+
+/* Keep large dashboard layouts from overflowing at tablet sizes. */
+@media (max-width: 1240px) {
+  .shell {
+    grid-template-columns: 224px minmax(0, 1fr);
+  }
+
+  .split,
+  .dash,
+  .cc-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .page {
+    padding: 24px;
+  }
+}
+
+/* Tablet and phone: sidebar becomes a drawer; main content uses full width. */
+@media (max-width: 900px) {
+  .shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    width: 100%;
+    overflow-x: clip;
+  }
+
+  .shell > div:not(.drawer-backdrop) {
+    grid-column: 1;
+    grid-row: 1;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: min(280px, 86vw);
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    z-index: 220;
+    transform: translateX(-105%);
+    transition: transform 0.24s ease;
+  }
+
+  .sidebar[data-open="true"] {
+    transform: translateX(0);
+  }
+
+  .drawer-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 210;
+    display: block;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .drawer-backdrop[data-open="true"] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .mobile-only {
+    display: inline-flex;
+  }
+
+  .desktop-only {
+    display: none !important;
+  }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 80;
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    gap: 8px;
+    padding: 10px 14px;
+  }
+
+  .topbar > * {
+    min-width: 0;
+  }
+
+  .topbar .row {
+    min-width: 0;
+  }
+
+  .topbar .avatar {
+    flex: 0 0 34px;
+  }
+
+  .page {
+    width: 100%;
+    max-width: 100%;
+    padding: 20px 16px 104px;
+  }
+
+  .page-head {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .page-head > *,
+  .page-head .row {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .page-head .row {
+    flex-wrap: wrap;
+  }
+
+  .grid-2,
+  .grid-3,
+  .grid-4,
+  .grid-stats,
+  .statbar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dash,
+  .split,
+  .cc-grid,
+  .reviewgrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .toolbar {
+    max-width: 100%;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+  }
+
+  .toolbar > * {
+    flex: 0 0 auto;
+  }
+
+  .toolbar .input {
+    min-width: 150px;
+  }
+
+  .segment {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .segment button {
+    flex: 0 0 auto;
+  }
+
+  .table-wrap,
+  .table-scroll,
+  .scroll-x {
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tabbar {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 150;
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    padding: 5px 4px max(5px, env(safe-area-inset-bottom));
+    background: rgba(255, 255, 255, 0.97);
+    border-top: 1px solid var(--line);
+    backdrop-filter: blur(12px);
+  }
+
+  .tabbar a,
+  .tabbar button {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 52px;
+    padding: 6px 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: 10px;
+    line-height: 1.2;
+    text-align: center;
+    white-space: normal;
+  }
+
+  .tabbar svg {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 auto;
+  }
+
+  /* Public header on tablet: use the menu instead of squeezing links. */
+  .pubhead__inner {
+    padding: 10px 16px;
+    gap: 10px;
+  }
+
+  .pubhead__nav {
+    display: none;
+  }
+
+  .pubhead__burger {
+    display: inline-flex;
+  }
+}
+
+/* Small phones. */
+@media (max-width: 600px) {
+  :root {
+    --t-base: 14px;
+  }
+
+  .page {
+    padding: 16px 12px 104px;
+  }
+
+  .container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .pubgrid {
+    width: 100%;
+    min-width: 0;
+    padding: 16px 12px 100px;
+    gap: 16px;
+  }
+
+  .page h1,
+  .page-head h1,
+  .page-head__text h1 {
+    font-size: clamp(22px, 6vw, 28px);
+    line-height: 1.2;
+  }
+
+  .page h2 {
+    font-size: 19px;
+    line-height: 1.3;
+  }
+
+  .page h3 {
+    font-size: 16px;
+    line-height: 1.35;
+  }
+
+  .page p,
+  .page .prose {
+    line-height: 1.55;
+  }
+
+  .card--pad {
+    padding: 14px;
+  }
+
+  .panel__body {
+    padding: 14px;
+  }
+
+  .grid-2,
+  .grid-3,
+  .grid-4,
+  .grid-stats,
+  .statbar {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .page .btn,
+  .page button.btn,
+  .page a.btn {
+    max-width: 100%;
+    min-height: 40px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .page .btn--lg {
+    padding: 11px 14px;
+    font-size: 14px;
+  }
+
+  .page-head .row {
+    width: 100%;
+  }
+
+  .page-head .row .btn {
+    flex: 1 1 auto;
+  }
+
+  /* Public header: keep logo, main action and menu inside the viewport. */
+  .pubhead__inner {
+    padding: 9px 12px;
+    gap: 8px;
+  }
+
+  .pubhead__mark {
+    flex: 1 1 auto;
+    overflow: hidden;
+  }
+
+  .pubhead__mark > * {
+    max-width: 100%;
+  }
+
+  .pubhead__find {
+    display: none;
+  }
+
+  .pubhead__actions {
+    flex: 0 1 auto;
+    gap: 6px;
+  }
+
+  .pubhead__actions .btn {
+    max-width: 132px;
+    min-height: 36px;
+    padding: 7px 9px;
+    font-size: 12px;
+    white-space: normal;
+  }
+
+  .pubhead__burger {
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+  }
+
+  /* Landing page content also needs a phone-sized layout. */
+  .hero__grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  .hero .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .hero .row {
+    flex-wrap: wrap;
+  }
+
+  .hero .btn {
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  .stepcard {
+    padding: 16px;
+  }
+
+  .toast-stack {
+    left: 12px;
+    right: 12px;
+    bottom: 88px;
+    width: auto;
+  }
+
+  .modal {
+    width: calc(100vw - 24px);
+    max-width: 100%;
+    max-height: calc(100dvh - 24px);
+    overflow-y: auto;
+  }
+}
+
+/* Extra-small devices, including narrow Android phones. */
+@media (max-width: 380px) {
+  .page {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .pubhead__inner {
+    padding-left: 9px;
+    padding-right: 9px;
+    gap: 5px;
+  }
+
+  .pubhead__actions .btn {
+    max-width: 112px;
+    padding: 6px 7px;
+    font-size: 11px;
+  }
+
+  .pubhead__burger {
+    flex-basis: 34px;
+    width: 34px;
+  }
+
+  .tabbar a,
+  .tabbar button {
+    font-size: 9px;
+  }
+}
+
+/* CivicLense landing page — mobile navbar */
+@media (max-width: 700px) {
+  .hero .container.row.row--between {
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: nowrap !important;
+    gap: 10px !important;
+  }
+
+  .hero .container.row.row--between > * {
+    min-width: 0;
+  }
+
+  .hero {
+    overflow-x: clip;
+  }
+
+  /* More compact mobile typography */
+  body {
+    font-size: 14px;
+  }
+
+  h1 {
+    font-size: clamp(1.8rem, 7vw, 2.5rem);
+    line-height: 1.12;
+  }
+
+  h2 {
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
+    line-height: 1.2;
+  }
+
+  h3 {
+    font-size: 1.05rem;
+  }
+
+  p,
+  li {
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  button,
+  .btn,
+  a.btn {
+    font-size: 0.82rem;
+  }
+
+  .hero .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+@media (max-width: 380px) {
+  body {
+    font-size: 13px;
+  }
+
+  .hero .container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  h1 {
+    font-size: 1.7rem;
+  }
+}
+
+/* ===== FIX: PublicHeader mobile hamburger and drawer ===== */
+
+.pubhead,
+.pubhead__inner {
+  min-width: 0;
+}
+
+.pubhead__inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pubhead__nav,
+.pubhead__find,
+.pubhead__actions {
+  min-width: 0;
+}
+
+.pubhead__burger {
+  display: none;
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--text);
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.drawer__sheet {
+  position: relative;
+  z-index: 2;
+  width: min(340px, 88vw);
+  height: 100%;
+  overflow-y: auto;
+  padding: 20px 16px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--sh-4);
+}
+
+.drawer__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, .55);
+}
+
+.drawer__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 18px 0;
+}
+
+.drawer__link {
+  display: block;
+  padding: 12px;
+  border-radius: 9px;
+  font-size: 14px;
+}
+
+.drawer__link:hover,
+.drawer__link[aria-current="page"] {
+  background: var(--surface-2);
+  color: var(--accent);
+}
+
+.drawer__foot {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.drawer__foot .btn {
+  justify-content: center;
+}
+
+@media (max-width: 760px) {
+  .pubhead__inner {
+    padding: 10px 14px !important;
+    gap: 8px;
+  }
+
+  .pubhead__nav,
+  .pubhead__find {
+    display: none !important;
+  }
+
+  .pubhead__actions {
+    margin-left: auto;
+    gap: 6px;
+  }
+
+  .pubhead__actions .pubhead__link--wide,
+  .pubhead__actions .btn--ghost-dark {
+    display: none !important;
+  }
+
+  .pubhead__actions .btn {
+    min-height: 34px;
+    padding: 7px 10px;
+    font-size: 11px;
+  }
+
+  .pubhead__burger {
+    display: inline-flex !important;
+  }
+
+  .pubhead__mark {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+
+  .pubhead__mark .display {
+    font-size: 15px;
+  }
+
+  /* Compact text across public pages */
+  .container {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  main.container {
+    padding-top: 22px !important;
+    padding-bottom: 32px !important;
+  }
+
+  main.container > h1 {
+    font-size: clamp(22px, 6vw, 29px);
+    line-height: 1.2;
+  }
+
+  main.container h2 {
+    font-size: 19px;
+  }
+
+  main.container h3 {
+    font-size: 16px;
+  }
+
+  main.container p,
+  main.container .prose {
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  main.container .label {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 380px) {
+  .pubhead__inner {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  .pubhead__mark .display {
+    font-size: 13px;
+  }
+
+  .pubhead__actions .btn {
+    padding: 7px 8px;
+    font-size: 10px;
+  }
+}

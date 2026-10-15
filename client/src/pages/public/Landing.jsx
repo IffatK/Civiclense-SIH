@@ -56,7 +56,10 @@ const CATEGORIES = [
   { icon: Icon.map, label: "Blocked drains", dept: "Storm Water" },
 ];
 
+
 export default function Landing() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <div>
       {/* ---------- hero ---------- */}
