@@ -382,8 +382,8 @@ Check that `VITE_API_URL` points at the running API and that `CLIENT_ORIGIN` mat
 
 ## Licence and credits
 
-Licence: [to be added by the copyright holder].
+Licence: [Made by Iffat Khan , Juveriya Khan , simran waghmare].
 
-Author: [name of author or team].
+Author: [Iffat Jgab ].
 
-Acknowledgements: Smart India Hackathon 2026 for problem statement SIH26043. The classifier uses MobileNetV2 pretrained weights (ImageNet). Maps use OpenStreetMap data.
+Acknowledgements: The classifier uses MobileNetV2 pretrained weights (ImageNet). Maps use OpenStreetMap data.
